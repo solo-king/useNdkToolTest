@@ -1,0 +1,37 @@
+Makefil常亮说明
+NDK:
+    ndk所在的根目录，即 android-ndk-r19c-linux-x86_64.zip解压后所在的目录
+    此处我解压命令如下:
+        unzip android-ndk-r19c-linux-x86_64.zip -d /home/chenqigan/tools/ndk
+    一版在一个终端使用时先导入下该零时变量:
+        export NDK=/home/chenqigan/tools/ndk/android-ndk-r19c
+    也可以将如下交叉编译工具链所在目录加到PATH中
+        /home/chenqigan/tools/ndk/android-ndk-r19c/toolchains/llvm/prebuilt/linux-x86_64/bin/
+G++:
+    cpp交叉编译工具链的目录，不需要做改变
+    
+G:=$(NDK)/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android27-clang
+    c文件交叉编译工具链
+CPP_FLAGS:
+    编译过程使用的标志
+SHARED_LIB_PATH:
+    动态库位置
+USED_SHARED_LIB:
+    动态库名，不需要带前缀lib和后缀.so
+NOTE:
+    Make 的那一套东西在这里完全适用
+例子说明:
+    1.可以clone下来后执行如下命令查看
+        git log
+    2.helloExecute
+        使用该工具链生成arm64板卡可用的执行文件，但没有依赖动态库
+    3.include
+        公共的头文件存放处
+    4.myLib
+        so文件存放处
+    5.printLibWithMyLib
+        生成一个依赖于另一个动态库的动态库
+    6.printMyLibVersionExecute
+        使用该工具链生成arm64板卡可用的执行文件，但依赖动态库
+    7.printMyLibVersionExecute2th
+        使用该工具链生成arm64板卡可用的执行文件，但依赖动态库的动态库
