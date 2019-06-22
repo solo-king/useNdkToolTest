@@ -35,3 +35,39 @@ NOTE:
         使用该工具链生成arm64板卡可用的执行文件，但依赖动态库
     7.printMyLibVersionExecute2th
         使用该工具链生成arm64板卡可用的执行文件，但依赖动态库的动态库
+
+##########################################################################################
+####################################ARM64环境下运行测试程序说明##################################
+##########################################################################################
+说明:
+    以下说明都以printMyLibVersionExecute2th可执行程序做示范，该可执行程序依赖如下两个动态库:
+        1)libmyTestLibImpl.so
+        2)libprintLibWthMyLib.so
+一、板卡开启USB调试功能
+    http://wiki.t-firefly.com/zh_CN/Firefly-RK3399/adb_use.html
+二、导入可执行程序到/vendor/bin目录，命令如下
+    cd ~/work/test/useNdkToolTest/cpp/printMyLibVersionExecute2th
+    adb root
+    adb remount /vendor
+    adb push printLibVer2th /vendor/bin
+三、导入执行程序所依赖的动态库
+    adb push libmyTestLibImpl.so /vendor/lib64 
+    adb push libprintLibWthMyLib.so /vendor/lib64 
+四、进入板卡执行可执行程序
+    adb shell
+    adb root
+    rk3399_firefly_mid:/ # printLibVer2th                                                                                                                                                                             
+    v1.0.0
+问题解决:
+    1.在执行 printLibVer2th可能会提示如下错误
+        rk3399_firefly_mid:/ # printLibVer2th
+        CANNOT LINK EXECUTABLE "printLibVer2th": library "libc++_shared.so" not found
+        解决办法:
+            该问题是板卡镜像缺少ｎｄｋ交叉编译工具链提供的动态库导致，所以直接拷贝到板卡中即可，命令如下
+                adb push /home/chenqigan/tools/ndk/android-ndk-r19c/sources/cxx-stl/llvm-libc++/libs/arm64-v8a/libc++_shared.so /vendor/lib64
+
+                                                                                                                                          
+    
+    
+
+    
